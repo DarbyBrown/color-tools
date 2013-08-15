@@ -6,4 +6,4 @@ A small collections of Advanced Sass color tools.
 More coming soon 
 
 
-[Demo and Usage](http://codepen.io/hugo/full/) 
+[Demo and Usage](http://codepen.io/hugo/full/bIjAE) 
