@@ -1,0 +1,61 @@
+/* ========= Color Tools ========= 
+*
+* 1. ct-hsl - Converts hex values to either hsla or hsl
+*
+* 2. ct-pallette - Given one color will create a pallet of colors in a list
+*
+*/
+
+// 1. CT-hsl - Converts hex values to either hsla or hsl, also preserves hsl format
+
+@function ct-hsl($color, $alpha:1) {
+    $result: null;
+    $func: null;
+    
+    @if length($color) == 1 {
+      $func: hue($color)/(hue($color)*0+1),saturation($color),lightness($color);
+    }
+    @elseif length($color) == 3 {
+      $func: nth($color,1)/(nth($color,1)*0+1), (nth($color,2) + 0%), (nth($color,3) + 0%);
+    }    
+    @if $alpha == 1 {
+      $result: unquote("hsl(#{$func})");
+    } @else  {
+      $result: unquote("hsla(#{$func},#{$alpha})");
+    }
+    @return $result;
+  }
+  
+  
+  
+  
+  // 2. CT-Pallette Function
+  
+  @function ct-pallet($color, $type: mono, $names: false) {
+        $main: $color;
+        $second: lighten(adjust-hue($color, 0.2deg),15%); 
+        $third: lighten(adjust-hue($color, 0.05deg),25%); 
+        $fourth:  darken(adjust-hue($color, 0.05deg),17%);  
+        $pallet: $main, $second, $third, $fourth;
+        
+        
+        @if $type == comp {
+          $fourth:  darken(complement($main), 12%);  
+          $pallet: $main, $second, $third, $fourth;
+        }
+        
+        @elseif $type == triad {
+          $second:  darken(adjust-hue($main, 230deg), 12%); 
+          $third:  darken(adjust-hue($main, 170deg), 12%); 
+          $pallet: $main, $second, $third, $fourth;
+        }
+        
+        @if $names == true {
+          $pallet: alpha $main, beta $second, gamma $third, delta $fourth; 
+        }
+        
+        
+        @return $pallet; 
+        
+      }     
+      
